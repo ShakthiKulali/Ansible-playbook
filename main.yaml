@@ -6,6 +6,6 @@
         src: /home/shakthi/file1
         dest: /tmp/test.txt
         owner: shakthi
-        group: mahi
+        group: shakthi
         mode: u=rw,g=r,o=r
       tags: copy_file
