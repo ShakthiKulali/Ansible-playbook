@@ -18,4 +18,4 @@
       
     - name: show java version output
       debug:
-        msg: "Java version installed: {{ java_version.stdout }}"
+        msg: "Java version installed: {{ java_version.stderr }}"
