@@ -1,5 +1,6 @@
 - name: install java 17 on ubuntu
   hosts: all
+  become: yes
   gather_facts: yes
   tasks:
     - name: update apt package index
@@ -15,6 +16,6 @@
       command: java -version
       register: java_version
       
-    - name: show java version
+    - name: show java version output
       debug:
         msg: "Java version installed: {{ java_version.stdout }}"
