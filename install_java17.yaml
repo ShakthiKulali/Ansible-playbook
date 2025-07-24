@@ -1,0 +1,20 @@
+- name: install java 17 on ubuntu
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: update apt package index
+      apt:
+        update_cache: yes
+
+    - name: install openjdk17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: check java version
+      command: java -version
+      register: java_version
+      
+    - name: show java version
+      debug:
+        msg: "Java version installed: {{ java_version.stdout }}"
