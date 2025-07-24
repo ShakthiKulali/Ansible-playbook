@@ -1,6 +1,5 @@
 - name: install java 17 on ubuntu
   hosts: all
-  become: yes
   gather_facts: yes
   tasks:
     - name: update apt package index
