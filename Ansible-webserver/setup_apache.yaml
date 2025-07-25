@@ -7,14 +7,11 @@
     - name: Test connection to the host
       ping:
 
-    - name: Update apt package index
-      apt:
-        update_cache: yes
-
     - name: Install apache2
       apt:
         name: apache2
         state: present
+        update_cache: yes
         
     - name: Ensure apache2 is running and enabled
       service:
