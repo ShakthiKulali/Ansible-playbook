@@ -1,0 +1,69 @@
+- name: Setup Apache web server on Ubuntu
+  hosts: all
+  gather_facts: yes
+  become: true
+ 
+  tasks:
+    - name: Test connection to the host
+      ping:
+
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+        
+    - name: Ensure apache2 is running and enabled
+      service:
+        name: apache2
+        state: started
+        enabled: true
+  
+    - name: Copy index.html to web root
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: shakthi 
+        group: shakthi
+        mode: u=rw,g=r,o=r
+
+    - name: Create group 'devops'
+      group:
+        name: devops
+        state: present
+    
+    - name: Create user 'delopyer'
+      user:
+        name: delopyer
+        group: devops
+        shell: /bin/bash
+
+    - name: Ensure a directory exists
+      file:
+        path: /opt/myapp
+        state: directory
+        mode: '0755'
+
+    - name: Modify Apache port
+      lineinfile:
+        path: /etc/apache2/ports.conf
+        regexp: '^Listen 80'
+        line: 'Listen 8080'
+        backup: yes
+
+    - name: Restart Apache after config changes
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Wait for web server to respond
+      uri:
+        url: http://localhost:8080
+        return_content: yes
+
+    - name: Print success message
+      debug:
+        msg: "Web server is up and configured!"  
