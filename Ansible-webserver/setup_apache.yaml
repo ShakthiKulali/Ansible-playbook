@@ -21,7 +21,7 @@
   
     - name: Copy index.html to web root
       copy:
-        src: C:\Users\Admin\Desktop\Ansible-playbook\Ansible-webserver\index.html
+        src: C:/Users/Admin/Desktop/Ansible-playbook/Ansible-playbook/Ansible-webserver/index.html
         dest: /var/www/html/index.html
         owner: shakthi 
         group: shakthi
