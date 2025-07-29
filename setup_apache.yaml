@@ -19,7 +19,7 @@
         state: started
         enabled: true
   
-      - name: Copy index.html to web root
+    - name: Copy index.html to web root
         copy:
           src: index.html
           dest: /var/www/html/index.html
