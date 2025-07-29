@@ -20,7 +20,7 @@
         enabled: true
   
     - name: Copy index.html to web root
-        copy:
+      copy:
           src: index.html
           dest: /var/www/html/index.html
           owner: shakthi 
