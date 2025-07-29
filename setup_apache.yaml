@@ -23,9 +23,9 @@
       copy:
         src: index.html
         dest: /var/www/html/index.html
-        owner: shakthi 
+        owner: shakthi
         group: shakthi
-        mode: u=rw,g=r,o=r
+        mode: '0644'
 
     - name: Create group 'devops'
       group:
