@@ -21,11 +21,11 @@
   
     - name: Copy index.html to web root
       copy:
-          src: index.html
-          dest: /var/www/html/index.html
-          owner: shakthi 
-          group: shakthi
-          mode: u=rw,g=r,o=r
+        src: index.html
+        dest: /var/www/html/index.html
+        owner: shakthi 
+        group: shakthi
+        mode: u=rw,g=r,o=r
 
     - name: Create group 'devops'
       group:
