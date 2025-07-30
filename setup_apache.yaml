@@ -44,19 +44,6 @@
         state: directory
         mode: '0755'
     
-    - name: Set up a cron job
-      cron:
-        name: "log timestamp"
-        user: deployer
-        minute: "*/30"
-        job: "date >> /home/deployer/timestamps.log"
-
-    - name: Template apache2.conf file
-      template:
-        src: apache2.conf.j2
-        dest: /etc/apache2/apache2.conf
-        mode: '0644'
-
     - name: Modify Apache port
       lineinfile:
         path: /etc/apache2/ports.conf
