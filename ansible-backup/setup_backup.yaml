@@ -1,0 +1,52 @@
+- name: Setup Simple Backup System
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+    - name: Create 'backup' group
+      group:
+        name: backup
+
+    - name: Create 'backupuser' user
+      user:
+        name: backupuser
+        group: backup
+        shell: /bin/bash
+
+    - name: Create backup directory
+      file:
+        path: /opt/backup
+        state: directory
+        owner: backupuser
+        group: backup
+        mode: '0755'
+
+    - name: Create log file
+      file:
+        path: /opt/backup/backup.log
+        state: touch
+        owner: backupuser
+        group: backup
+        mode: '0644'
+
+    - name: Copy sample file to server
+      copy:
+        src: backup.txt
+        dest: /opt/backup/backup.txt
+        owner: backupuser
+        group: backup
+        mode: '0644'
+
+    - name: Set up daily backup cron job
+      cron:
+        name: "Daily backup"
+        user: backupuser
+        minute: "0"
+        hour: "2"
+        job: "cp /opt/backup/backup.txt /opt/backup/backup_$(date +\\%F).txt >> /opt/backup/backup.log 2>&1"
+
+    - name: Confirm backup system is ready
+      debug:
+        msg: "Backup system set up for user 'backupuser'!"
