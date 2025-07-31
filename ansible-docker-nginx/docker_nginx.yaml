@@ -1,0 +1,66 @@
+- name: Deploy Nginx in Docker
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    - name: Install prerequisites
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker APT repo
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Create directory for custom HTML
+      file:
+        path: /opt/nginx/html
+        state: directory
+        mode: '0755'
+
+    - name: Copy custom index.html to server
+      copy:
+        src: index.html
+        dest: /opt/nginx/html/index.html
+        mode: '0644'
+
+    - name: Run Nginx Docker container
+      docker_container:
+        name: nginx_web
+        image: nginx:latest
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:80"
+        volumes:
+          - /opt/nginx/html:/usr/share/nginx/html:ro
+
+    - name: Show success message
+      debug:
+        msg: "Nginx Docker container is up and serving your custom page!"
